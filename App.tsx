@@ -3,11 +3,9 @@
  * https://github.com/facebook/react-native
  *
  * @format
- * @flow strict-local
  */
 
 import React from 'react';
-import type {Node} from 'react';
 import {
   TouchableOpacity,
   SafeAreaView,
@@ -23,7 +21,7 @@ import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 import BackgroundGeolocation from 'react-native-background-geolocation';
 
-const App: () => Node = () => {
+function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {

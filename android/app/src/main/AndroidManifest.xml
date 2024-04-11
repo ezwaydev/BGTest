@@ -1,7 +1,10 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.bgtest">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Required for BG lib use of exact alarm by AlarmManager to start fg service -->
+    <uses-permission android:minSdkVersion="34" android:name="android.permission.USE_EXACT_ALARM" />
+
+    <uses-feature android:name="android.hardware.location.gps" />
 
     <application
       android:name=".MainApplication"
@@ -22,8 +25,5 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
       </activity>
-      <service android:name="com.transistorsoft.locationmanager.service.TrackingService" android:foregroundServiceType="location" />
-      <service android:name="com.transistorsoft.locationmanager.service.LocationRequestService" android:foregroundServiceType="location" />
-      <service android:name="com.transistorsoft.locationmanager.service.ActivityRecognitionService" android:foregroundServiceType="location" />
     </application>
 </manifest>
