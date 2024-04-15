@@ -15,6 +15,7 @@ import {
   useColorScheme,
   View,
   StyleSheet,
+  EmitterSubscription,
 } from 'react-native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
@@ -74,7 +75,7 @@ function App(): React.JSX.Element {
           event => {
             console.info('[getProviderState] ' + JSON.stringify(event));
           },
-          error => {
+          (error: string | Error | undefined) => {
             console.warn(`Unable to get provider state because of ${error}`);
           },
         );
@@ -92,8 +93,34 @@ function App(): React.JSX.Element {
     await BackgroundGeolocation.stop();
   };
 
+  const LOC_MAX_AGE = 15000; // allow loc 15sec from past 
+
+  const getSingleLocation = async () => {
+    const cfg = {
+      timeout: 5, // 5sec
+      desiredAccuracy: 100, // 100m
+      maximumAge: LOC_MAX_AGE,
+      persist: false,
+      samples: 1
+    };
+    try {
+      const loc = await BackgroundGeolocation.getCurrentPosition(cfg);
+      console.log(`getSingleLocation acquired location:${JSON.stringify(loc)}`);
+      if (loc.age > LOC_MAX_AGE) {
+        console.warn(`Location too old: ${loc.age}ms`);
+      }
+    } catch(e) {
+      console.error(`getSingleLocation failed:${JSON.stringify(e)}`);
+    }
+  }
+
+  // BG Event Handler Subscription
+  interface Subscription {
+    remove():void;
+  }
+
   React.useEffect(() => {
-    const subscriptions = {
+    const subscriptions: Record<string, Subscription | null> = {
       onLocation: null,
       onProviderChange: null,
       onHeartbeat: null,
@@ -117,7 +144,7 @@ function App(): React.JSX.Element {
       }
       subscriptions.onLocation = BackgroundGeolocation.onLocation(
         location => {
-          console.info('[onLocation] ' + JSON.stringify(location));
+          console.info('[onLocation] ' + (location?.sample ? 'SAMPLE ' : '') + JSON.stringify(location));
         },
         error => {
           console.info('[onLocation] ERROR:' + JSON.stringify(error));
@@ -204,6 +231,11 @@ function App(): React.JSX.Element {
             style={styles.button}
             onPress={stopBackgroundGeolocation}>
             <Text>Stop</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={getSingleLocation}>
+            <Text>Get Single Location</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
