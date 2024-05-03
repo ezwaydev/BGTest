@@ -26,8 +26,8 @@ allprojects {
 
     repositories {
         maven {
-           // Required for react-native-background-geolocation
-           url("${project(':react-native-background-geolocation').projectDir}/libs")
+           // Required for react-native-background-geolocation-android
+           url("${project(':react-native-background-geolocation-android').projectDir}/libs")
         }
         maven {
            // Required for react-native-background-fetch

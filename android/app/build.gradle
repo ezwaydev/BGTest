@@ -57,7 +57,7 @@ react {
 def enableProguardInReleaseBuilds = false
 
 
-Project background_geolocation = project(':react-native-background-geolocation')
+Project background_geolocation = project(':react-native-background-geolocation-android')
 
 /**
  * The preferred build flavor of JavaScriptCore (JSC)

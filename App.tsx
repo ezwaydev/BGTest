@@ -20,7 +20,7 @@ import {
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
-import BackgroundGeolocation from 'react-native-background-geolocation';
+import BackgroundGeolocation from 'react-native-background-geolocation-android';
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
